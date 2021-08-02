@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SQL Coding Example</title>
+</head>
+<body>
+    <h1>SQL Challenge</h1>
+    <div>    
+        <p> This 
+            <a href="https://www.w3resource.com/sql-exercises/movie-database-exercise/subqueries-exercises-on-movie-database.php">movie database</a> 
+        </p> 
+        <p>Getting the movie title and year of movies that feature an actor whose surname starts with a W, ordered alphabetically by movie title. 
+            Can rephrase this to an actor whose name meets the search criteria. In this case, I’ve searched for actors whose last name begins with a W in order to get multiple results, but this would be most useful when searching for all of the movies one specific actor has starred in. For example WHERE act_fname LIKE('Ewan') AND act_lname LIKE('McGregor')
+        </p>
+        <p>WHERE act_fname = 'Ewan' AND act_lname = 'McGregor'</p>
+        <p>or if you can't remember their full name</p>
+        <p>WHERE act_fname LIKE('Ewan%') AND act_lname LIKE('McGreg%')</p>
+    </div>
+    <div>
+        <h3>Sub-Query Example</h3>
+        <p>In this example I've used sub-queries because I only need to access one column from each of the additional tables to complete the query.</p>
+<pre>
+<code>
+SELECT mov_title AS title, mov_year AS year
+FROM movie
+WHERE mov_id IN (
+SELECT mov_id
+FROM movie_cast
+WHERE act_id IN (
+SELECT act_id
+FROM actor
+WHERE act_lname LIKE('W%')))
+ORDER BY title ASC;
+</code>
+</pre>
+    </div>
+
+    <div>
+        table
+        <table>
+            <tr>
+                <th>A</th>
+                <th>B</th>
+            </tr>
+            <tr>
+                <td>a</td>
+                <td>b</td>
+            </tr>
+            <tr>
+                <td>a</td>
+                <td>b</td>
+            </tr>
+            <tr>
+                <td>a</td>
+                <td>b</td>
+            </tr>
+            <tr>
+                <td>a</td>
+                <td>b</td>
+            </tr>
+        </table>
+    </div>
+
+
+    <div>
+        <h3>Join Example</h3>
+        <p>If I want to display the actors first and last names in addition to this being part of the search criteria, then I need to use joins instead to access these additional columns.</p>
+<pre>
+<code>
+SELECT movie.mov_title AS title, movie.mov_year AS year, actor.act_fname AS first_name, actor.act_lname AS last_name
+FROM movie
+INNER JOIN movie_cast
+ON movie.mov_id = movie_cast.mov_id
+INNER JOIN actor
+ON actor.act_id = movie_cast.act_id
+WHERE actor.act_lname LIKE('W%')
+ORDER BY title ASC;
+</code>
+</pre>
+    </div>
+    <div>
+        table
+    </div>
+</body>
+</html>
