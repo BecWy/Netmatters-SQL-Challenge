@@ -13,7 +13,7 @@
         <div>       
             <p> The following queries were created using the
                 <a href="https://www.w3resource.com/sql-exercises/movie-database-exercise/subqueries-exercises-on-movie-database.php">W3 Resource Movie Database.</a> 
-                They return the movie title and year of all movies that feature an actor/s whose name/s match the search, 
+                These queries return the movie title and year of all movies that feature an actor/s whose name/s match the search, 
                 ordered alphabetically by movie title. 
             </p>
             <p>This is the table structure:</p>
@@ -21,8 +21,8 @@
                 <img src="./movie-database.png">
             </div>
             <p>
-                The information that we need for this query is stored in two tables: movie and actor. We need the movie title and year 
-                from movies, and to be able to search the actor table for an actor’s name. These two tables are not linked in any way, 
+                The information that we need for these queries is stored in two tables: movie and actor. We need the movie title and year 
+                from movies, and to be able to search the actor table for an actor’s name. These two tables are not linked in any way; 
                 there is not a primary/foreign key relationship set up to connect these tables. Instead, we have to use a third table, movie_cast, to 
                 link these tables. movie_cast includes the act_id, which links it to the actor table, as well as the mov_id, which links 
                 it to the movie table.
@@ -98,9 +98,9 @@ ORDER BY title ASC;
                 you would use = instead of LIKE. 
             </p>
             <p>
-                Finally, we use ORDER BY to sort the results alphabetically by the movie titles. ASC sorts from A-Z and technically 
-                doesn’t need to be included in the above query, because it is the default setting. If we wanted to use DESC, Z-A, 
-                then this would need to be specified.
+                Finally, we use ORDER BY to sort the results alphabetically by movie title. Ascending sorts from A-Z and technically 
+                doesn’t need to be included in the above query, because it is the default setting. If we wanted to sort in descending order, Z-A, 
+                then DESC would need to be specified.
             </p>
         </div>
 
@@ -166,7 +166,7 @@ ORDER BY title ASC;
             <h3>Explanation</h3>
             <p>
                 As in the previous query, we display the mov_title and mov_year columns from the movie table, renamed as title and year. 
-                Additionally, we also want to display the actor/s’ first and last names from the actor table. These columns have also 
+                Additionally, we want to display the actor/s’ first and last names from the actor table. These columns have also 
                 been renamed to be clearer; act_fname becomes first_name and act_lname becomes last_name. The keyword DISTINCT is important, 
                 because it ensures that each row is unique and that duplicate results are not returned. 
             </p>
