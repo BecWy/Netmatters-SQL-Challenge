@@ -8,23 +8,39 @@
     <link rel="stylesheet" href="./style.css">
 </head>
 <body>
-    <h1>SQL Challenge</h1>
-    <div>       
-        <p>This query returns the movie title and year of all movies that feature an actor/s whose name/s match the search, 
-            ordered alphabetically by movie title. 
-        </p>
-        <p>
-            In the below examples, I’ve searched for actors whose last names begins with a W in order to get multiple results. 
-            However, this query would be most useful when requesting a list of all of the movies one specific actor has starred in. 
-        </p>
-        <p>
-            For example, WHERE act_fname = 'Ewan' AND act_lname = 'McGregor'.
-        </p>
-    </div>
-    <div>
-        <h2>Sub-Query Example</h2>
-        <p>For this example, I've used sub-queries because I only need to access one column from each of the additional tables to complete the query.</p>
-        <h3>Query</h3>
+    <div class="body-cont">
+        <h1>SQL Challenge</h1>
+        <div>       
+            <p> The following queries were created using the
+                <a href="https://www.w3resource.com/sql-exercises/movie-database-exercise/subqueries-exercises-on-movie-database.php">W3 Resource Movie Database.</a> 
+                They return the movie title and year of all movies that feature an actor/s whose name/s match the search, 
+                ordered alphabetically by movie title. 
+            </p>
+            <p>This is the table structure:</p>
+            <div class="img-cont">
+                <img src="./movie-database.png">
+            </div>
+            <p>
+                The information that we need for this query is stored in two tables: movie and actor. We need the movie title and year 
+                from movies, and to be able to search the actor table for an actor’s name. These two tables are not linked in any way, 
+                there is not a primary/foreign key relationship set up to connect these tables. Instead, we have to use a third table, movie_cast, to 
+                link these tables. movie_cast includes the act_id, which links it to the actor table, as well as the mov_id, which links 
+                it to the movie table.
+            </p>
+        
+            <p>
+                In the below examples, I’ve searched for actors whose last names begins with a W in order to return multiple results. 
+                However, this query would be most useful when requesting a list of all of the movies one specific actor has starred in. 
+            </p>
+            <p>
+                For example, WHERE act_fname = 'Ewan' AND act_lname = 'McGregor'.
+            </p>
+        
+        </div>
+        <div>
+            <h2>Sub-Query Example</h2>
+            <p>For this first example, I've used sub-queries because we only need to access one column from each of the additional tables to complete the query.</p>
+            <h3>Query</h3>
 <pre>
 <code>
 SELECT mov_title AS title, mov_year AS year
@@ -39,44 +55,67 @@ WHERE mov_id IN (
 ORDER BY title ASC;
 </code>
 </pre>
-    </div>
+        </div>
 
-    <div>
-        <h3>Output</h3>
-        <table>
-            <tr>
-                <th>title</th>
-                <th>year</th>
-            </tr>
-            <tr>
-                <td>Aliens</td>
-                <td>1986</td>
-            </tr>
-            <tr>
-                <td>Boogie Nights</td>
-                <td>1997</td>
-            </tr>
-            <tr>
-                <td>Good Will Hunting</td>
-                <td>1997</td>
-            </tr>
-            <tr>
-                <td>Titanic</td>
-                <td>1997</td>
-            </tr>
-        </table>
-    </div>
+        <div class="table-cont">
+            <h3>Output</h3>
+            <table>
+                <tr>
+                    <th>title</th>
+                    <th>year</th>
+                </tr>
+                <tr>
+                    <td>Aliens</td>
+                    <td>1986</td>
+                </tr>
+                <tr>
+                    <td>Boogie Nights</td>
+                    <td>1997</td>
+                </tr>
+                <tr>
+                    <td>Good Will Hunting</td>
+                    <td>1997</td>
+                </tr>
+                <tr>
+                    <td>Titanic</td>
+                    <td>1997</td>
+                </tr>
+            </table>
+        </div>
 
+        <div>
+            <h3>Explanation</h3>
+            <p>
+                The columns mov_title and mov_year in the movie table are set to be displayed in the output, renamed as title and year. 
+                We then use sub-queries to first link through to the movie_cast table with the mov_id, and then through to the actor table 
+                using the act_id. In this second sub-query, we can then run the search on the actor’s name. 
+            </p>
+            <p>
+                LIKE will return all matches that include the search input in the brackets. Beginning with a W means that all 
+                results returned must start with a w – there cannot be other characters preceding this. The % is a wildcard which tells 
+                SQL that you are happy for any characters to be present at the point where it is used. This means that all names that begin 
+                with a w will be returned, regardless of which characters follow the w. Alternatively, to match the search input exactly, 
+                you would use = instead of LIKE. 
+            </p>
+            <p>
+                Finally, we use ORDER BY to sort the results alphabetically by the movie titles. ASC sorts from A-Z and technically 
+                doesn’t need to be included in the above query, because it is the default setting. If we wanted to use DESC, Z-A, 
+                then this would need to be specified.
+            </p>
+        </div>
 
-    <div>
-        <h2>Join Example</h2>
-        <p>If I want to display additonal data from the actors table, such as the actors first and last names, 
-            then joins are needed to access these additional columns.
-        </p>
-        <h3>Query</h3>
+        <div>
+            <h2>Join Example</h2>
+            <p>If I want to display additonal data from the actors table, such as the actors first and last names, 
+                then joins are needed to access these additional columns.
+            </p>
+            <h3>Query</h3>
 <pre>
 <code>
-SELECT DISTINCT actor.act_id, movie.mov_title AS title, movie.mov_year AS year, actor.act_fname AS first_name, actor.act_lname AS last_name
+SELECT DISTINCT movie.mov_title AS title, 
+    movie.mov_year AS year, 
+    actor.act_fname AS first_name, 
+    actor.act_lname AS last_name
 FROM movie
 INNER JOIN movie_cast
 ON movie.mov_id = movie_cast.mov_id
@@ -86,45 +125,59 @@ WHERE actor.act_lname LIKE('W%')
 ORDER BY title ASC;
 </code>
 </pre>
+        </div>
+        <div class="table-cont">
+            <h3>Output</h3>
+            <table>
+                <tr>
+                    <th>title</th>
+                    <th>year</th>
+                    <th>first_name</th>
+                    <th>last_name</th>
+                </tr>
+                <tr>
+                    <td>Aliens</td>
+                    <td>1986</td>
+                    <td>Sigourney</td>
+                    <td>Weaver</td>
+                </tr>
+                <tr>
+                    <td>Boogie Nights</td>
+                    <td>1997</td>
+                    <td>Mark</td>
+                    <td>Wahlberg</td>
+                </tr>
+                <tr>
+                    <td>Good Will Hunting</td>
+                    <td>1997</td>
+                    <td>Robin</td>
+                    <td>Williams</td>
+                </tr>
+                <tr>
+                    <td>Titanic</td>
+                    <td>1997</td>
+                    <td>Kate</td>
+                    <td>Winslet</td>
+                </tr>
+            </table> 
+        </div>
+
+        <div>
+            <h3>Explanation</h3>
+            <p>
+                As in the previous query, we display the mov_title and mov_year columns from the movie table, renamed as title and year. 
+                Additionally, we also want to display the actor/s’ first and last names from the actor table. These columns have also 
+                been renamed to be clearer; act_fname becomes first_name and act_lname becomes last_name. The keyword DISTINCT is important, 
+                because it ensures that each row is unique and that duplicate results are not returned. 
+            </p>
+            <p>
+                We use INNER JOIN to first connect to the movie_cast table using the mov_id, and then again to connect to the actor 
+                table using the act_id. Once the tables are connected, we can use the same WHERE clause as before, and sort the results 
+                alphabetically by title with ORDER BY.
+            </p>
+        </div>
+
+        <br>
     </div>
-    <div>
-        <h3>Output</h3>
-        <table>
-            <tr>
-                <th>title</th>
-                <th>year</th>
-                <th>first_name</th>
-                <th>last_name</th>
-            </tr>
-            <tr>
-                <td>Aliens</td>
-                <td>1986</td>
-                <td>Sigourney</td>
-                <td>Weaver</td>
-            </tr>
-            <tr>
-                <td>Boogie Nights</td>
-                <td>1997</td>
-                <td>Mark</td>
-                <td>Wahlberg</td>
-            </tr>
-            <tr>
-                <td>Good Will Hunting</td>
-                <td>1997</td>
-                <td>Robin</td>
-                <td>Williams</td>
-            </tr>
-            <tr>
-                <td>Titanic</td>
-                <td>1997</td>
-                <td>Kate</td>
-                <td>Winslet</td>
-            </tr>
-        </table> 
-    </div>
-    <br>
-    <p> These queries were created using the
-        <a href="https://www.w3resource.com/sql-exercises/movie-database-exercise/subqueries-exercises-on-movie-database.php">W3 Resource Movie Database</a> 
-    </p> 
 </body>
 </html>
